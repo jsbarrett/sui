@@ -313,6 +313,20 @@ where
     get_key_pair_from_rng(&mut OsRng)
 }
 
+/// Wrapper function to return SuiKeypair based on key scheme string
+pub fn random_key_pair_by_type(key_scheme: Option<String>) -> (SuiAddress, SuiKeyPair) {
+    match key_scheme.as_deref() {
+        Some("secp256k1") => {
+            let (addr, key_pair): (_, Secp256k1KeyPair) = get_key_pair();
+            (addr, SuiKeyPair::Secp256k1SuiKeyPair(key_pair))
+        }
+        Some(_) | None => {
+            let (addr, key_pair): (_, Ed25519KeyPair) = get_key_pair();
+            (addr, SuiKeyPair::Ed25519SuiKeyPair(key_pair))
+        }
+    }
+}
+
 /// Generate a keypair from the specified RNG (useful for testing with seedable rngs).
 pub fn get_key_pair_from_rng<KP: KeypairTraits, R>(csprng: &mut R) -> (SuiAddress, KP)
 where
@@ -321,6 +335,26 @@ where
 {
     let kp = KP::generate(csprng);
     (kp.public().into(), kp)
+}
+
+/// Wrapper function to return SuiKeypair based on key scheme string with seedable rng.
+pub fn random_key_pair_by_type_from_rng<R>(
+    key_scheme: Option<String>,
+    csprng: &mut R,
+) -> (SuiAddress, SuiKeyPair)
+where
+    R: rand::CryptoRng + rand::RngCore,
+{
+    match key_scheme.as_deref() {
+        Some("secp256k1") => {
+            let (addr, key_pair): (_, Secp256k1KeyPair) = get_key_pair_from_rng(csprng);
+            (addr, SuiKeyPair::Secp256k1SuiKeyPair(key_pair))
+        }
+        Some(_) | None => {
+            let (addr, key_pair): (_, Ed25519KeyPair) = get_key_pair_from_rng(csprng);
+            (addr, SuiKeyPair::Ed25519SuiKeyPair(key_pair))
+        }
+    }
 }
 
 // TODO: C-GETTER

@@ -21,7 +21,8 @@ use rand::rngs::adapter::ReadRng;
 
 use sui_types::base_types::SuiAddress;
 use sui_types::crypto::{
-    get_key_pair_from_rng, EncodeDecodeBase64, PublicKey, Signature, SuiKeyPair,
+    get_key_pair_from_rng, random_key_pair_by_type_from_rng, EncodeDecodeBase64, PublicKey,
+    Signature, SuiKeyPair,
 };
 
 #[derive(Serialize, Deserialize)]
@@ -106,7 +107,7 @@ impl FileBasedKeystore {
                     key.map(|k| (Into::<SuiAddress>::into(&k.public()), k))
                 })
                 .collect::<Result<BTreeMap<_, _>, _>>()
-                .map_err(|_| anyhow::anyhow!("Invalid Keypair file"))?
+                .map_err(|e| anyhow::anyhow!("Invalid Keypair file {:#?} {:?}", e, path))?
         } else {
             BTreeMap::new()
         };
@@ -152,14 +153,17 @@ impl SuiKeystore {
         self.0.add_key(keypair)
     }
 
-    pub fn generate_new_key(&mut self) -> Result<(SuiAddress, String), anyhow::Error> {
+    pub fn generate_new_key(
+        &mut self,
+        key_scheme: Option<String>,
+    ) -> Result<(SuiAddress, String, u8), anyhow::Error> {
         let mnemonic = Mnemonic::generate(12)?;
         let seed = mnemonic.to_seed("");
         let mut rng = RngWrapper(ReadRng::new(&seed));
-        // TODO(joyqvq): add ability to generate as Secp256k1 keypair
-        let (address, kp) = get_key_pair_from_rng(&mut rng);
-        self.0.add_key(SuiKeyPair::Ed25519SuiKeyPair(kp))?;
-        Ok((address, mnemonic.to_string()))
+        let (address, kp) = random_key_pair_by_type_from_rng(key_scheme, &mut rng);
+        let flag = kp.public().flag();
+        self.0.add_key(kp)?;
+        Ok((address, mnemonic.to_string(), flag))
     }
 
     pub fn keys(&self) -> Vec<PublicKey> {
@@ -174,12 +178,15 @@ impl SuiKeystore {
         KeystoreSigner::new(&*self.0, signer)
     }
 
-    pub fn import_from_mnemonic(&mut self, phrase: &str) -> Result<SuiAddress, anyhow::Error> {
+    pub fn import_from_mnemonic(
+        &mut self,
+        phrase: &str,
+        key_scheme: Option<String>,
+    ) -> Result<SuiAddress, anyhow::Error> {
         let seed = &Mnemonic::from_str(phrase).unwrap().to_seed("");
         let mut rng = RngWrapper(ReadRng::new(seed));
-        let (address, kp) = get_key_pair_from_rng(&mut rng);
-        // TODO(joyqvq): add ability to import as Secp256k1 keypair
-        self.0.add_key(SuiKeyPair::Ed25519SuiKeyPair(kp))?;
+        let (address, kp) = random_key_pair_by_type_from_rng(key_scheme, &mut rng);
+        self.0.add_key(kp)?;
         Ok(address)
     }
 
