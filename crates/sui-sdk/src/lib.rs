@@ -446,6 +446,34 @@ impl SuiClient {
         })
     }
 
+    pub async fn split_coin_equal(
+        &self,
+        signer: SuiAddress,
+        coin_object_id: ObjectID,
+        split_count: u64,
+        gas: Option<ObjectID>,
+        gas_budget: u64,
+    ) -> anyhow::Result<TransactionData> {
+        Ok(match &self {
+            Self::Http(c) => {
+                let transaction_bytes = c
+                    .split_coin_equal(signer, coin_object_id, split_count, gas, gas_budget)
+                    .await?;
+                TransactionData::from_signable_bytes(&transaction_bytes.tx_bytes.to_vec()?)?
+            }
+            Self::Ws(c) => {
+                let transaction_bytes = c
+                    .split_coin_equal(signer, coin_object_id, split_count, gas, gas_budget)
+                    .await?;
+                TransactionData::from_signable_bytes(&transaction_bytes.tx_bytes.to_vec()?)?
+            }
+            SuiClient::Embedded(c) => {
+                c.split_coin_equal(signer, coin_object_id, split_count, gas, gas_budget)
+                    .await?
+            }
+        })
+    }
+
     pub async fn merge_coins(
         &self,
         signer: SuiAddress,

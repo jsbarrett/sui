@@ -1,0 +1,62 @@
+---
+source: crates/sui-cost/tests/snapshot_tests.rs
+assertion_line: 17
+expression: common_costs
+---
+Publish:
+  computationCost: 566
+  storageCost: 84
+  storageRebate: 16
+MergeCoin:
+  computationCost: 506
+  storageCost: 32
+  storageRebate: 32
+? SplitCoin: 0
+: computationCost: 489
+  storageCost: 32
+  storageRebate: 0
+? SplitCoin: 1
+: computationCost: 532
+  storageCost: 48
+  storageRebate: 0
+? SplitCoin: 2
+: computationCost: 575
+  storageCost: 64
+  storageRebate: 0
+? SplitCoin: 3
+: computationCost: 617
+  storageCost: 80
+  storageRebate: 0
+SplitCoinEqual:
+  computationCost: 580
+  storageCost: 64
+  storageRebate: 0
+TransferWholeCoin:
+  computationCost: 41
+  storageCost: 32
+  storageRebate: 0
+TransferPortionCoin:
+  computationCost: 41
+  storageCost: 32
+  storageRebate: 0
+TransferWholeSuiCoin:
+  computationCost: 38
+  storageCost: 32
+  storageRebate: 0
+TransferPortionSuiCoin:
+  computationCost: 45
+  storageCost: 48
+  storageRebate: 0
+SharedCounterCreate:
+  computationCost: 99
+  storageCost: 31
+  storageRebate: 0
+SharedCounterAssertValue:
+  computationCost: 188
+  storageCost: 31
+  storageRebate: 15
+SharedCounterIncrement:
+  computationCost: 188
+  storageCost: 31
+  storageRebate: 15
+

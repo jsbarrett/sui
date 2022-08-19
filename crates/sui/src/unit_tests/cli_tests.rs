@@ -919,7 +919,8 @@ async fn test_split_coin() -> Result<(), anyhow::Error> {
         gas: Some(gas),
         gas_budget: 1000,
         coin_id: coin,
-        amounts: vec![1000, 10],
+        amounts: Some(vec![1000, 10]),
+        count: 0,
     }
     .execute(&mut context)
     .await?;
@@ -947,6 +948,8 @@ async fn test_split_coin() -> Result<(), anyhow::Error> {
         .get_objects_owned_by_address(address)
         .await?;
 
+    // TODO: add test for equal split coin
+
     // Get another coin
     for c in object_refs {
         if get_gas_value(&get_object(c.object_id, &mut context).await.unwrap()) > 2000 {
@@ -960,7 +963,8 @@ async fn test_split_coin() -> Result<(), anyhow::Error> {
         gas: None,
         gas_budget: 1000,
         coin_id: coin,
-        amounts: vec![1000, 10],
+        amounts: Some(vec![1000, 10]),
+        count: 0,
     }
     .execute(&mut context)
     .await?;
