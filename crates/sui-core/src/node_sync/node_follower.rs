@@ -711,6 +711,21 @@ impl NodeSyncHandle {
         Ok(futures)
     }
 
+    pub async fn sync_pending_checkpoint(
+        &self,
+        transactions: impl Iterator<Item = &ExecutionDigests>,
+    ) -> SuiResult<impl Stream<Item = SuiResult>> {
+        let mut futures = FuturesOrdered::new();
+        for digests in transactions {
+            let (tx, rx) = oneshot::channel();
+            let msg = DigestsMessage::new_for_exec_driver(&digests.transaction, tx);
+            Self::send_msg_with_tx(self.sender.clone(), msg).await?;
+            futures.push_back(Self::map_rx(rx));
+        }
+
+        Ok(futures)
+    }
+
     pub async fn handle_execution_request(
         &self,
         digests: impl Iterator<Item = TransactionDigest>,
