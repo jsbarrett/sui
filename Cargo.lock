@@ -1894,9 +1894,9 @@ checksum = "3f107b87b6afc2a64fd13cac55fe06d6c8859f12d4b14cbcdd2c67d0976781be"
 
 [[package]]
 name = "elliptic-curve"
-version = "0.12.2"
+version = "0.12.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c47abd0a791d2ac0c7aa1118715f85b83689e4522c4e3a244e159d4fc9848a8d"
+checksum = "e7bb888ab5300a19b8e5bceef25ac745ad065f3c9f7efc6de1b91958110891d3"
 dependencies = [
  "base16ct",
  "crypto-bigint",
@@ -5158,9 +5158,9 @@ dependencies = [
 
 [[package]]
 name = "prettyplease"
-version = "0.1.16"
+version = "0.1.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "da6ffbe862780245013cb1c0a48c4e44b7d665548088f91f6b90876d0625e4c2"
+checksum = "697ae720ee02011f439e0701db107ffe2916d83f718342d65d7f8bf7b8a5fee9"
 dependencies = [
  "proc-macro2 1.0.42",
  "syn 1.0.99",
@@ -6843,7 +6843,7 @@ checksum = "734676eb262c623cec13c3155096e08d1f8f29adce39ba17948b18dad1e54142"
 
 [[package]]
 name = "sui"
-version = "0.6.2"
+version = "0.7.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -7273,6 +7273,7 @@ version = "0.0.0"
 dependencies = [
  "anyhow",
  "async-trait",
+ "bcs",
  "colored",
  "either",
  "itertools",
@@ -7303,7 +7304,7 @@ dependencies = [
 
 [[package]]
 name = "sui-node"
-version = "0.6.2"
+version = "0.7.0"
 dependencies = [
  "anyhow",
  "axum",
@@ -7397,11 +7398,15 @@ dependencies = [
  "futures",
  "futures-core",
  "jsonrpsee",
+ "move-binary-format",
+ "move-bytecode-utils",
+ "move-core-types",
  "rand 0.8.5",
  "serde 1.0.143",
  "serde_json",
  "sha3 0.10.2",
  "signature",
+ "sui-adapter",
  "sui-config",
  "sui-core",
  "sui-json",
@@ -7500,7 +7505,7 @@ dependencies = [
 
 [[package]]
 name = "sui-tool"
-version = "0.6.2"
+version = "0.7.0"
 dependencies = [
  "anyhow",
  "clap 3.2.17",
@@ -7728,9 +7733,9 @@ dependencies = [
 
 [[package]]
 name = "tera"
-version = "1.16.0"
+version = "1.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7c9783d6ff395ae80cf17ed9a25360e7ba37742a79fa8fddabb073c5c7c8856d"
+checksum = "1d4685e72cb35f0eb74319c8fe2d3b61e93da5609841cde2cb87fcc3bea56d20"
 dependencies = [
  "chrono",
  "chrono-tz",
@@ -8614,9 +8619,9 @@ checksum = "099b7128301d285f79ddd55b9a83d5e6b9e97c92e0ea0daebee7263e932de992"
 
 [[package]]
 name = "unicode-ident"
-version = "1.0.2"
+version = "1.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "15c61ba63f9235225a22310255a29b806b907c9b8c964bcbd0a2c70f3f2deea7"
+checksum = "c4f5b37a154999a8f3f98cc23a628d850e154479cd94decf3414696e12e31aaf"
 
 [[package]]
 name = "unicode-linebreak"
@@ -8910,9 +8915,9 @@ dependencies = [
 
 [[package]]
 name = "webpki-roots"
-version = "0.22.3"
+version = "0.22.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "44d8de8415c823c8abd270ad483c6feeac771fad964890779f9a8cb24fbbc1bf"
+checksum = "f1c760f0d366a6c24a02ed7816e23e691f5d92291f94d15e836006fd11b04daf"
 dependencies = [
  "webpki",
 ]
