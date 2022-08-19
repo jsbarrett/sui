@@ -3,11 +3,9 @@
 
 import React from 'react';
 import './App.css';
-import { root } from '.';
-import { Wallet, WalletProvider } from 'sui-wallet-adapter-react';
-import { SuiWalletAdapter, MockWalletAdapter} from '@sui-wallet-adapter/all-wallets';
-import { WalletWrapper } from 'sui-wallet-adapter-ui';
-import { Button } from '@mui/material';
+import { Wallet, WalletProvider } from '@mysten/wallet-adapter-react';
+import { SuiWalletAdapter } from '@mysten/wallet-adapter-sui-wallet';
+import { WalletWrapper } from '@mysten/wallet-adapter-ui';
 import { TestButton } from './TestButton';
 
 function App() {
